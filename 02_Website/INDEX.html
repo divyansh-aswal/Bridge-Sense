@@ -1,0 +1,132 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bridge Frequency Damage Detection</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 450px;
+            background: white;
+            padding: 25px;
+            margin: 50px auto;
+            border-radius: 12px;
+            box-shadow: 0px 0px 12px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 22px;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 18px;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #0066ff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #004bcc;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f7f7f7;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .level {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Bridge Vibration Damage Detection</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <label>Span Length L (m)</label>
+        <input type="number" step="any" name="L" required>
+
+        <label>Width b (m)</label>
+        <input type="number" step="any" name="b" required>
+
+        <label>Depth h (m)</label>
+        <input type="number" step="any" name="h" required>
+
+        <label>Elastic Modulus E (GPa)</label>
+        <input type="number" step="any" name="E" required>
+
+        <label>Density ρ (kg/m³)</label>
+        <input type="number" step="any" name="rho" required>
+
+        <label>Support Type</label>
+        <select name="support" required>
+            <option value="simply_supported">Simply Supported</option>
+            <option value="cantilever">Cantilever</option>
+            <option value="fixed_fixed">Fixed-Fixed</option>
+        </select>
+
+        <label>Upload CSV File (data.csv)</label>
+        <input type="file" name="csvfile" accept=".csv" required>
+
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if result %}
+        <div class="result">
+            {% if result.error %}
+                <p class="error">❌ {{ result.error }}</p>
+            {% else %}
+                <h2>Results</h2>
+                <p><b>Dominant Frequency:</b> {{ "%.3f"|format(result.dominant) }} Hz</p>
+                <p><b>Theoretical Baseline:</b> {{ "%.3f"|format(result.baseline) }} Hz</p>
+                <p><b>Percent Difference:</b> {{ "%.2f"|format(result.diff) }}%</p>
+                <p><b>Damage Level:</b> <span class="level">{{ result.level }}</span></p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
