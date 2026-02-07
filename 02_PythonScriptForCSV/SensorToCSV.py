@@ -3,7 +3,7 @@ import csv
 import time
 from datetime import datetime
 
-PORT = 'COM3'      # change if needed
+PORT = 'COM3'      
 BAUD = 9600
 FILENAME = "sensor_data.csv"
 
@@ -32,7 +32,7 @@ try:
             timestamp = now.strftime("%H:%M:%S") + f":{int(now.microsecond/1000):03d}"
 
             writer.writerow([timestamp] + data)
-            file.flush()   # 🔥 FORCE WRITE TO DISK
+            file.flush()   
             print(timestamp, data)
 
 except KeyboardInterrupt:
